@@ -2,7 +2,7 @@
 /*********************************************************************
 *
 *   NAME:
-*       consoleAPI.cpp
+*       console.cpp
 *
 *   DESCRIPTION:
 *       API for interfacing over UART serial
