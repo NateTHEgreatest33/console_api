@@ -12,7 +12,6 @@ add_library( consoleAPI
 
 target_link_libraries( consoleAPI
   pico_stdlib 
-  hardware_spi
   # Using Pico W
   pico_cyw43_arch_none
 

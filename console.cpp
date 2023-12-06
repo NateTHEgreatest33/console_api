@@ -55,6 +55,21 @@ core::console()
 *       console class constructor
 *
 *********************************************************************/
-core::console::console(){}
+core::console::console( bool debugModeOn ) : debugMode( debugModeOn ) 
+    {
+    logItr = log.begin();
+    }
 
+core::console::~console(){}
 
+void core::console::assert_stop( const std::string s, const bool condition, const std::source_location location = std::source_location::current() ){}
+
+void core::console::assert_continue( const std::string s, const bool condition, const std::source_location location = std::source_location::current() ){}
+
+void core::console::assert_debug( const std::string s, const bool condition, const std::source_location location = std::source_location::current() ){}
+
+void core::console::assert_debug( const std::string s, const bool condition, const std::source_location location = std::source_location::current() ){}
+
+void core::console::console_runtime(){}
+
+void core::console::print_assert_log( void ){}
