@@ -16,6 +16,7 @@
 #include <array>
 // #include <unordered_map>
 #include <functional>
+#include "pico/stdlib.h"
 
 /*--------------------------------------------------------------------
                           GLOBAL NAMESPACES
@@ -57,22 +58,21 @@ namespace core {
 class console 
     {
     public:
-        console(bool debugMode );
+        console( bool debugModeOn, uart_inst_t* uart_port );
         ~console();
         // override >> operator?
-        void assert_stop( const std::string s, const bool condition, const std::source_location location = std::source_location::current() );
-        void assert_continue( const std::string s, const bool condition, const std::source_location location = std::source_location::current() );
-        void assert_debug( const std::string s, const bool condition, const std::source_location location = std::source_location::current() );
+        void assert( const std::string s, const bool condition, const std::source_location location = std::source_location::current() );
         void log(  const std::string s, const std::source_location location = std::source_location::current() );
         void console_runtime();
 
     private:
-
-      void print_assert_log( void );
-      std::array< std::function<void()>, static_cast<size_t>(commands::NUM_COMMANDS) > command_list;
-      std::array<std::string, 100> log;
-      std::array<std::string,100>::iterator logItr;
-      bool debugMode;
+      uart_inst_t* p_uart;
+      std::string p_buffer;
+      void command_handler( std::string& command );
+      // std::array < std::function<void(void)>, static_cast<size_t>(NUM_COMMANDS) > p_command_list;
+      std::array<std::string, 100> p_log;
+      std::array<std::string,100>::iterator p_logItr;
+      bool p_debugMode;
     };
 
 
