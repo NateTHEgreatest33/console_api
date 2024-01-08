@@ -61,14 +61,14 @@ class console
         console( bool debugModeOn, uart_inst_t* uart_port );
         ~console();
         // override >> operator?
-        void assert( const std::string s, const bool condition, const std::source_location location = std::source_location::current() );
-        void log(  const std::string s, const std::source_location location = std::source_location::current() );
+        void add_assert( const std::string s, const bool condition, const std::source_location location = std::source_location::current() );
+        void log( const std::string s, const std::source_location location = std::source_location::current() );
         void console_runtime();
 
     private:
       uart_inst_t* p_uart;
       std::string p_buffer;
-      void command_handler( std::string& command );
+      // void command_handler( std::string& command );
       // std::array < std::function<void(void)>, static_cast<size_t>(NUM_COMMANDS) > p_command_list;
       std::array<std::string, 100> p_log;
       std::array<std::string,100>::iterator p_logItr;

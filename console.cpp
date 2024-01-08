@@ -31,10 +31,10 @@
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
-const std::unordered_map< std::string, std::function< void( core::console& c ) commands = 
+const std::unordered_map< std::string, std::function< void( core::console& c ) > > commands = 
 {
-{ "print assert",    print_assert_log },
-{ "example command", print_assert_log }
+// { "print assert",    print_assert_log },
+// { "example command", print_assert_log }
 };
 
 /*--------------------------------------------------------------------
@@ -68,7 +68,7 @@ core::console::console
     p_debugMode( debugModeOn ), 
     p_uart( uart_port )
 {
-p_logItr = log.begin();
+p_logItr = p_log.begin();
 
 } /* console::console() */
 
@@ -92,17 +92,17 @@ core::console::~console
 /*********************************************************************
 *
 *   PROCEDURE NAME:
-*       core::console::assert
+*       core::console::add_assert
 *
 *   DESCRIPTION:
 *       console class assert function
 *
 *********************************************************************/
-void core::console::assert
+void core::console::add_assert
     (
     const std::string          s, 
     const bool                 condition, 
-    const std::source_location location = std::source_location::current() 
+    const std::source_location location
     )
 {
 /*----------------------------------------------------------
@@ -119,7 +119,7 @@ if( !condition )
 /*----------------------------------------------------------
 build assert string and add to array
 ----------------------------------------------------------*/
-assert_string = location.file_name + ":" + location.line + " - " + s;
+assert_string = std::string( location.file_name() ) + ":" + std::to_string( location.line() ) + " - " + s;
 *p_logItr = assert_string;
 
 /*----------------------------------------------------------
@@ -190,7 +190,7 @@ if( new_line )
     ------------------------------------------------------*/
     itr = commands.find( p_buffer );
     if( itr != commands.end() )
-        itr->second( this );
+        itr->second( *this );
         
     /*------------------------------------------------------
     clear buffer
@@ -200,18 +200,30 @@ if( new_line )
 
 } /* console::console_runtime() */
 
-void core::console::print_assert_log( void )
-    {
-    auto log_iterator = p_log.begin();
+/*********************************************************************
+*
+*   PROCEDURE NAME:
+*       core::console::print_assert_log
+*
+*   DESCRIPTION:
+*       print assert log function
+*
+*********************************************************************/
+// void core::console::print_assert_log
+//     ( 
+//     void 
+//     )
+// {
+// auto log_iterator = p_log.begin();
 
-    std::cout << "ASSERT LOG:\n"
-    while( log_iterator != p_logItr )
-        {
-        std::cout << *log_iterator << std::endl;
-        log_iterator++;
-        }
+// std::cout << "ASSERT LOG:\n"
+// while( log_iterator != p_logItr )
+//     {
+//     std::cout << *log_iterator << std::endl;
+//     log_iterator++;
+//     }
 
-    }
+// } /* core::console::print_assert_log() */
 
 
 
