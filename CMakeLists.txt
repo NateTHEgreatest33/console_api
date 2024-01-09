@@ -8,6 +8,8 @@ pico_sdk_init()
 add_library( consoleAPI
     console.hpp
     console.cpp
+    console_commands.hpp
+    console_commands.cpp
     )
 
 target_link_libraries( consoleAPI

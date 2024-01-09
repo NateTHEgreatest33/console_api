@@ -15,6 +15,7 @@
                               INCLUDES
 --------------------------------------------------------------------*/
 #include "console.hpp"
+#include "console_commands.hpp"
 
 /*--------------------------------------------------------------------
                           GLOBAL NAMESPACES
@@ -31,11 +32,6 @@
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
-const std::unordered_map< std::string, std::function< void( core::console& c ) > > commands = 
-{
-// { "print assert",    print_assert_log },
-// { "example command", print_assert_log }
-};
 
 /*--------------------------------------------------------------------
                               VARIABLES
@@ -167,17 +163,20 @@ if( uart_is_readable( p_uart ) )
     ------------------------------------------------------*/
     if( c == '\r')
         {
-        c = '\n';
+        uart_putc_raw( p_uart, '\r' );
+        uart_putc_raw( p_uart, '\n' );
         new_line = true;
         }
-        
+    else
+        {
+        /*--------------------------------------------------
+        Add to buffer & print back to user to show that 
+        input has been processed. 
+        --------------------------------------------------*/
+        p_buffer += c;
+        uart_putc_raw( p_uart, c );
+        }  
 
-    /*------------------------------------------------------
-    Add to buffer & print back to user to show that input
-    has been processed. 
-    ------------------------------------------------------*/  
-    p_buffer += c;
-    uart_putc_raw( p_uart, c );
     }
 
 /*----------------------------------------------------------
@@ -191,7 +190,8 @@ if( new_line )
     itr = commands.find( p_buffer );
     if( itr != commands.end() )
         itr->second( *this );
-        
+    else
+        std::cout << "command not found" << std::endl;
     /*------------------------------------------------------
     clear buffer
     ------------------------------------------------------*/
@@ -203,37 +203,33 @@ if( new_line )
 /*********************************************************************
 *
 *   PROCEDURE NAME:
-*       core::console::print_assert_log
+*       core::console::get_log_ref
 *
 *   DESCRIPTION:
-*       print assert log function
+*       returns a refrence to the private log variable
 *
 *********************************************************************/
-// void core::console::print_assert_log
-//     ( 
-//     void 
-//     )
-// {
-// auto log_iterator = p_log.begin();
-
-// std::cout << "ASSERT LOG:\n"
-// while( log_iterator != p_logItr )
-//     {
-//     std::cout << *log_iterator << std::endl;
-//     log_iterator++;
-//     }
-
-// } /* core::console::print_assert_log() */
-
-
-
-/*--------------------------------------------------------------------
-Command Functions
---------------------------------------------------------------------*/
-static void print_assert_log
+std::array<std::string,100>& core::console::get_log_ref
     ( 
-    core::console& c
+    void 
     )
 {
-return;
-}
+return p_log;
+} /* console::get_log_ref() */
+
+/*********************************************************************
+*
+*   PROCEDURE NAME:
+*       core::console::get_log_itr
+*
+*   DESCRIPTION:
+*       returns a refrence to the log iterator
+*
+*********************************************************************/
+std::array<std::string,100>::iterator core::console::get_log_itr
+    ( 
+    void 
+    )
+{
+return p_logItr;
+} /* console::get_log_itr() */

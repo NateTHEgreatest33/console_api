@@ -64,6 +64,8 @@ class console
         void add_assert( const std::string s, const bool condition, const std::source_location location = std::source_location::current() );
         void log( const std::string s, const std::source_location location = std::source_location::current() );
         void console_runtime();
+        std::array<std::string,100>& get_log_ref( void );
+        std::array<std::string,100>::iterator get_log_itr( void );
 
     private:
       uart_inst_t* p_uart;
