@@ -17,6 +17,7 @@
 #include "console.hpp"
 #include "console_commands.hpp"
 
+#include "time.h"
 /*--------------------------------------------------------------------
                           GLOBAL NAMESPACES
 --------------------------------------------------------------------*/
@@ -57,11 +58,9 @@ core::console()
 *
 *********************************************************************/
 core::console::console
-    ( 
-    bool         debugModeOn, 
-    uart_inst_t* uart_port 
+    (      
+    uart_inst_t* uart_port                /* uart port for console */
     ) : 
-    p_debugMode( debugModeOn ), 
     p_uart( uart_port )
 {
 p_logItr = p_log.begin();
@@ -96,9 +95,9 @@ core::console::~console
 *********************************************************************/
 void core::console::add_assert
     (
-    const std::string          s, 
-    const bool                 condition, 
-    const std::source_location location
+    const std::string          s,            /*      assert string */
+    const bool                 condition,    /*   condition to add */
+    const std::source_location location      /* location of assert */
     )
 {
 /*----------------------------------------------------------
@@ -115,7 +114,7 @@ if( !condition )
 /*----------------------------------------------------------
 build assert string and add to array
 ----------------------------------------------------------*/
-assert_string = std::string( location.file_name() ) + ":" + std::to_string( location.line() ) + " - " + s;
+assert_string = std::string( location.file_name() ) + ":" + std::to_string( location.line() ) + " " + std::to_string( to_ms_since_boot( get_absolute_time() ) ) + " - " + s;
 *p_logItr = assert_string;
 
 /*----------------------------------------------------------

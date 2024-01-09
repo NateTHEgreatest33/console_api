@@ -124,6 +124,13 @@ void clear_screen
     core::console& c                            /* console refrence */
     )
 {
+/*----------------------------------------------------------
+Send the clear screen command to minicom:
+    Esc     the ASCII Escape character, value 0x1B.  
+    [       the ASCII left square brace character, value 0x5B.  
+    2       the ASCII character for numeral 2, value 0x32.  
+    J       the ASCII character for the letter J, value 0x4A.  
+----------------------------------------------------------*/
 printf("%c[2J", 0x1b);
 printf("%c[0;0H", 0x1b);
 } /* clear_screen() */
