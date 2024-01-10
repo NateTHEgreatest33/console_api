@@ -55,7 +55,7 @@ class console
     public:
         console( uart_inst_t* uart_port );
         ~console();
-        void add_assert( const std::string s, const bool condition, const std::source_location location = std::source_location::current() );
+        void add_assert( const std::string s, const bool condition = true, const std::source_location location = std::source_location::current() );
         void log( const std::string s, const std::source_location location = std::source_location::current() );
         void console_runtime();
         std::array<std::string,100>& get_log_ref( void );
