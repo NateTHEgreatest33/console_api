@@ -63,6 +63,8 @@ core::console::console
     ) : 
     p_uart( uart_port )
 {
+uart_init( p_uart, 115200 );
+
 p_logItr = p_log.begin();
 
 } /* console::console() */
@@ -175,6 +177,17 @@ if( uart_is_readable( p_uart ) )
         p_buffer += c;
         uart_putc_raw( p_uart, c );
         }  
+
+    /*------------------------------------------------------
+    Don't allow p_buffer to grow exponentially. Reset
+    console window and buffer
+    ------------------------------------------------------*/
+    if ( p_buffer.length() > MAX_CMD_STR_SIZE )
+        {
+        uart_putc_raw( p_uart, '\r' );
+        uart_putc_raw( p_uart, '\n' );
+        p_buffer="";
+        }
 
     }
 

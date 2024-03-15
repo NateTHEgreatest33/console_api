@@ -63,7 +63,8 @@ class console
 
     private:
       uart_inst_t* p_uart;
-      std::string p_buffer;
+      std::string p_buffer; //TODO: convert this to size limited char array
+      // std::array<char, 100> p_buffer;
       std::array<std::string, 100> p_log;
       std::array<std::string,100>::iterator p_logItr;
     };
