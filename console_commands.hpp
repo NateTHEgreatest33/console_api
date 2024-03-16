@@ -41,6 +41,11 @@ void clear_screen
     core::console& c
     );
 
+void toggle_test_mode
+    ( 
+    core::console& c
+    );
+
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
@@ -48,7 +53,8 @@ const std::unordered_map< std::string, std::function< void( core::console& c ) >
 {
 { "help",      help             },
 { "print log", print_assert_log },
-{ "clear",     clear_screen     }
+{ "clear",     clear_screen     },
+{ "testmode", toggle_test_mode  }
 };
 /*--------------------------------------------------------------------
                               VARIABLES
