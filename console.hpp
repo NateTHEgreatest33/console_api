@@ -60,6 +60,7 @@ class console
         void console_runtime();
         std::array<std::string,100>& get_log_ref( void );
         std::array<std::string,100>::iterator get_log_itr( void );
+        std::array<std::string,100>::iterator& get_log_itr_ref( void );
 
     private:
       uart_inst_t* p_uart;

@@ -116,7 +116,7 @@ if( !condition )
 /*----------------------------------------------------------
 build assert string and add to array
 ----------------------------------------------------------*/
-assert_string = std::string( location.file_name() ) + ":" + std::to_string( location.line() ) + " " + std::to_string( to_ms_since_boot( get_absolute_time() ) ) + " - " + s;
+assert_string = std::string( location.file_name() ) + ":" + std::to_string( location.line() ) + " - " + s;
 *p_logItr = assert_string;
 
 /*----------------------------------------------------------
@@ -235,7 +235,7 @@ return p_log;
 *       core::console::get_log_itr
 *
 *   DESCRIPTION:
-*       returns a refrence to the log iterator
+*       returns current log iterator
 *
 *********************************************************************/
 std::array<std::string,100>::iterator core::console::get_log_itr
@@ -245,3 +245,21 @@ std::array<std::string,100>::iterator core::console::get_log_itr
 {
 return p_logItr;
 } /* console::get_log_itr() */
+
+
+/*********************************************************************
+*
+*   PROCEDURE NAME:
+*       core::console::get_log_itr_ref
+*
+*   DESCRIPTION:
+*       returns a refrence to the log iterator
+*
+*********************************************************************/
+std::array<std::string,100>::iterator& core::console::get_log_itr_ref
+    ( 
+    void 
+    )
+{
+return p_logItr;
+} /* console::get_log_itr_ref() */

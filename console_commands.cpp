@@ -170,3 +170,37 @@ report to user test mode status
 ----------------------------------------------------------*/
 std::cout << "Test Mode: " << enabled << std::endl;
 }
+
+
+
+/*********************************************************************
+*
+*   PROCEDURE NAME:
+*       clear_log
+*
+*   DESCRIPTION:
+*       clear assert log function
+*
+*********************************************************************/
+void clear_log
+    ( 
+    core::console& c                            /* console refrence */
+    )
+{
+/*----------------------------------------------------------
+Get log references
+----------------------------------------------------------*/
+std::array<std::string,100>::iterator& log_itr_ref = c.get_log_itr_ref();
+std::array<std::string,100>& log_ref               = c.get_log_ref();
+
+/*----------------------------------------------------------
+Reset iterator and add cleared assert
+----------------------------------------------------------*/
+log_itr_ref = log_ref.begin();
+c.add_assert( "assert log cleared");
+
+/*----------------------------------------------------------
+report to user log cleared
+----------------------------------------------------------*/
+std::cout << "log cleared" << std::endl;
+}
