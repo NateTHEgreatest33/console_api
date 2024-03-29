@@ -16,6 +16,7 @@
 --------------------------------------------------------------------*/
 #include "console.hpp"
 #include "console_commands.hpp"
+#include "mutex_lock.hpp"
 
 #include "time.h"
 /*--------------------------------------------------------------------
@@ -64,7 +65,7 @@ core::console::console
     p_uart( uart_port )
 {
 uart_init( p_uart, 115200 );
-
+mutex_init( &p_itrMutex );
 p_logItr = p_log.begin();
 
 } /* console::console() */
@@ -120,15 +121,24 @@ assert_string = std::string( location.file_name() ) + ":" + std::to_string( loca
 *p_logItr = assert_string;
 
 /*----------------------------------------------------------
-Update iterator
+p_logItr must be updated in a thread safe manner. so here
+we are wrapping the update code in a mutex_lock
 ----------------------------------------------------------*/
-p_logItr++;
+    {
+    utl::mutex_lock lock( p_itrMutex );
+    /*----------------------------------------------------------
+    Update iterator
+    ----------------------------------------------------------*/
 
-/*----------------------------------------------------------
-Loop if we are at the end of array
-----------------------------------------------------------*/
-if( p_logItr == p_log.end() )
-    p_logItr = p_log.begin();
+    p_logItr++;
+
+    /*----------------------------------------------------------
+    Loop if we are at the end of array
+    ----------------------------------------------------------*/
+    if( p_logItr == p_log.end() )
+        p_logItr = p_log.begin();
+    }
+
 
 } /* console::assert() */
 
@@ -263,3 +273,20 @@ std::array<std::string,100>::iterator& core::console::get_log_itr_ref
 {
 return p_logItr;
 } /* console::get_log_itr_ref() */
+
+/*********************************************************************
+*
+*   PROCEDURE NAME:
+*       core::console::get_itr_mutex
+*
+*   DESCRIPTION:
+*       returns a refrence to the private mutex
+*
+*********************************************************************/
+mutex_t& core::console::get_itr_mutex
+    ( 
+    void
+    )
+{
+return p_itrMutex;
+} /* console::get_itr_mutex() */

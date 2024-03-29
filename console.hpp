@@ -15,6 +15,7 @@
 #include <iostream>
 #include <array>
 
+#include "pico/mutex.h"
 #include "pico/stdlib.h"
 
 /*--------------------------------------------------------------------
@@ -61,6 +62,7 @@ class console
         std::array<std::string,100>& get_log_ref( void );
         std::array<std::string,100>::iterator get_log_itr( void );
         std::array<std::string,100>::iterator& get_log_itr_ref( void );
+        mutex_t& get_itr_mutex( void );
 
     private:
       uart_inst_t* p_uart;
@@ -68,6 +70,7 @@ class console
       // std::array<char, 100> p_buffer;
       std::array<std::string, 100> p_log;
       std::array<std::string,100>::iterator p_logItr;
+      mutex_t p_itrMutex;
     };
 
 

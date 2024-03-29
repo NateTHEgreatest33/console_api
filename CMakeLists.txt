@@ -17,6 +17,8 @@ target_link_libraries( consoleAPI
   # Using Pico W
   pico_cyw43_arch_none
 
+  utilLib
+
 )
 
 target_include_directories(consoleAPI PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

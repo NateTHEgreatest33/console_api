@@ -15,6 +15,9 @@
                               INCLUDES
 --------------------------------------------------------------------*/
 #include "console_commands.hpp"
+#include "mutex_lock.hpp"
+
+#include "pico/mutex.h"
 
 /*--------------------------------------------------------------------
                           GLOBAL NAMESPACES
@@ -192,11 +195,19 @@ Get log references
 ----------------------------------------------------------*/
 std::array<std::string,100>::iterator& log_itr_ref = c.get_log_itr_ref();
 std::array<std::string,100>& log_ref               = c.get_log_ref();
+mutex_t& mutex_ref                                 = c.get_itr_mutex();
 
 /*----------------------------------------------------------
-Reset iterator and add cleared assert
+Reset iterator in thread safe way
 ----------------------------------------------------------*/
-log_itr_ref = log_ref.begin();
+    {
+    utl::mutex_lock lock( mutex_ref );
+    log_itr_ref = log_ref.begin();
+    }
+
+/*----------------------------------------------------------
+Add cleared assert
+----------------------------------------------------------*/
 c.add_assert( "assert log cleared");
 
 /*----------------------------------------------------------
