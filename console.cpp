@@ -115,30 +115,28 @@ if( !condition )
     return;
 
 /*----------------------------------------------------------
+claim mutex so that no other thread attempts to overwrite
+the same assert index
+----------------------------------------------------------*/
+utl::mutex_lock lock( p_itrMutex );
+
+/*----------------------------------------------------------
 build assert string and add to array
 ----------------------------------------------------------*/
 assert_string = std::string( location.file_name() ) + ":" + std::to_string( location.line() ) + " - " + s;
 *p_logItr = assert_string;
 
 /*----------------------------------------------------------
-p_logItr must be updated in a thread safe manner. so here
-we are wrapping the update code in a mutex_lock
+Update iterator
 ----------------------------------------------------------*/
-    {
-    utl::mutex_lock lock( p_itrMutex );
-    /*----------------------------------------------------------
-    Update iterator
-    ----------------------------------------------------------*/
 
-    p_logItr++;
+p_logItr++;
 
-    /*----------------------------------------------------------
-    Loop if we are at the end of array
-    ----------------------------------------------------------*/
-    if( p_logItr == p_log.end() )
-        p_logItr = p_log.begin();
-    }
-
+/*----------------------------------------------------------
+Loop if we are at the end of array
+----------------------------------------------------------*/
+if( p_logItr == p_log.end() )
+    p_logItr = p_log.begin();
 
 } /* console::assert() */
 
