@@ -51,6 +51,11 @@ void clear_log
     core::console& c
     );
 
+void boot_sel_mode
+    ( 
+    core::console& c
+    );
+
 /*--------------------------------------------------------------------
                            MEMORY CONSTANTS
 --------------------------------------------------------------------*/
@@ -60,7 +65,8 @@ const std::unordered_map< std::string, std::function< void( core::console& c ) >
 { "print log", print_assert_log },
 { "clear",     clear_screen     },
 { "testmode",  toggle_test_mode },
-{ "clear log", clear_log        }
+{ "clear log", clear_log        },
+{ "bootsel",   boot_sel_mode    }
 };
 /*--------------------------------------------------------------------
                               VARIABLES

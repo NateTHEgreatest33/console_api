@@ -18,6 +18,7 @@
 #include "mutex_lock.hpp"
 
 #include "pico/mutex.h"
+#include "pico/bootrom.h"
 
 /*--------------------------------------------------------------------
                           GLOBAL NAMESPACES
@@ -215,3 +216,33 @@ report to user log cleared
 ----------------------------------------------------------*/
 std::cout << "log cleared" << std::endl;
 }
+
+/*********************************************************************
+*
+*   PROCEDURE NAME:
+*       boot_sel_mode
+*
+*   DESCRIPTION:
+*       reboots the pico into BOOTSEL
+*
+*********************************************************************/
+void boot_sel_mode
+    ( 
+    core::console& c                            /* console refrence */
+    )
+{
+/*----------------------------------------------------------
+WARNING: this is an reboot causing function!
+
+This will reboot the pico into BOOTSEL mode so that elf files,
+can be loaded!
+
+The Two Arguments passed in are:
+A) 0 - no pin selected for activity LED
+B) 0- to enable both interfaces (as per a cold boot)
+----------------------------------------------------------*/
+c.add_assert( "Rebooting into bootsel" );
+reset_usb_boot( 0, 0 );
+
+}
+

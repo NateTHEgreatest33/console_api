@@ -16,6 +16,7 @@ target_link_libraries( consoleAPI
   pico_stdlib 
   # Using Pico W
   pico_cyw43_arch_none
+  pico_bootrom
 
   utilLib
 
